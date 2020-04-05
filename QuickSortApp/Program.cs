@@ -7,7 +7,8 @@ namespace QuickSortApp
     {
         static void Main(string[] args)
         {
-
+            // default menu - Menu 1
+            StartMenu1();
 
           /*  Console.WriteLine("Give a file-path");
             string path = Console.ReadLine();
@@ -34,6 +35,154 @@ namespace QuickSortApp
         }
 
         // C:\Users\X\source\repos\QuickSortApp\QuickSortApp\bin\Debug\rawdata.txt
+
+        static void StartMenu1()
+        {
+            string[] menuposition = { "Read a file", "Exit"};
+            int currentposition = 0;
+            int menutype = 1;
+            Console.Title = "Quick Sort Application";
+            string[] table = null;
+            while (true)
+            {
+                ShowMenu(menuposition, currentposition);
+                SelectingOptions(menuposition, currentposition, menutype, table);
+            }
+            
+        }
+
+        static void StartMenu2(string[] table)
+        {
+            string[] menuposition = { "Display table", "Sort table", "Write sorted table to file", "Clean table",  "Exit" };
+            int currentposition = 0;
+            int menutype = 2;
+            Console.Title = "Quick Sort Application";
+            while (true)
+            {
+                ShowMenu(menuposition, currentposition);
+                SelectingOptions(menuposition, currentposition, menutype, table);
+            }
+
+        }
+
+        static void ShowMenu(string[] position, int currentposition)
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Welcome to Quick Sort App. In this program you can \n" +
+                "read the data from file \n" +
+                "save the data into table \n" +
+                "sort the data \n" +
+                "clean the table \n" +
+                "save the sorted table to file");
+            Console.WriteLine();
+            for (int i = 0; i < position.Length; i++)
+            {
+                if (i == currentposition)
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkCyan;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(position[i]);
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                }
+                else
+                {
+                    Console.WriteLine(position[i]);
+                }
+            }
+        }
+
+        static void SelectingOptions(string[] position, int currentposition, int menu, string[] table)
+        {
+
+            do
+            {
+                ConsoleKeyInfo buttom = Console.ReadKey();
+                if (buttom.Key == ConsoleKey.UpArrow)
+                {
+                    currentposition = (currentposition > 0) ? currentposition - 1 : position.Length - 1;
+                    ShowMenu(position, currentposition);
+                }
+                else if (buttom.Key == ConsoleKey.DownArrow)
+                {
+                    currentposition = (currentposition + 1) % position.Length;
+                    ShowMenu(position, currentposition);
+                }
+                else if (buttom.Key == ConsoleKey.Escape)
+                {
+                    currentposition = position.Length - 1;
+                    break;
+                }
+                else if (buttom.Key == ConsoleKey.Enter)
+                {
+                    break;
+                }
+                
+            }
+            while (true);
+            RunOptions(currentposition, menu, table);
+        }
+
+        static void RunOptions(int currentposition, int menu, string[] table)
+        {
+            string[] myTable;
+            string[] strTable;
+            float[] floatTable;
+
+
+            if (menu == 1)
+            {
+                switch (currentposition)
+                {
+                    case 0: Console.Clear();
+                        Console.WriteLine("Give a file-path");
+                        string path = Console.ReadLine();
+                        myTable = ReadTable(path); 
+                        Console.WriteLine("Data has been loaded! \nPress any key");                        
+                        Console.ReadKey();
+                        StartMenu2(myTable);
+                        break;
+                        
+                    case 1: Environment.Exit(0); break;
+                }
+            }
+
+           
+            else
+            {
+                switch (currentposition)
+                {
+                    case 0: 
+                        Console.Clear();
+                        if (DataTypeCheck(table) == true)
+                        {
+                            floatTable = DataTypeConversion(table);
+                            Console.WriteLine("An array containing data from the loaded file:");
+                            ShowTable(floatTable);
+                            Console.ReadKey();
+                            Console.WriteLine("Press any key");
+                            break;
+                        }
+                        else
+                        {
+                            strTable = table;
+                            Console.WriteLine("An array containing data from the loaded file:");
+                            ShowTable(strTable);
+                            Console.ReadKey();
+                            Console.WriteLine("Press any key");
+                            break;
+                        }
+                    case 1: Console.Clear(); Console.WriteLine("Opcja sort table"); Console.ReadKey(); break;
+                    case 2: Console.Clear(); Console.WriteLine("Opcja write table to file"); Console.ReadKey(); break;
+                    case 3: Console.Clear(); Console.WriteLine("Opcja clean table"); Console.ReadKey(); StartMenu1();  break;
+                    case 4: Environment.Exit(0); break;
+                }
+            }
+            
+
+        }
         static string[] ReadTable(string path)
         {
             // Reading data from a file
@@ -57,7 +206,6 @@ namespace QuickSortApp
             RawTable = Data.Split(StringSeparators, StringSplitOptions.None);
 
             sr.Close();
-            Console.WriteLine(RawTable);
             return RawTable;
         }
 
@@ -70,7 +218,6 @@ namespace QuickSortApp
                 Console.WriteLine(item);
                 i++;
             }
-            Console.WriteLine(Table);
 
         }
 
@@ -83,7 +230,6 @@ namespace QuickSortApp
                 Console.WriteLine(item);
                 i++;
             }
-            Console.WriteLine(Table);
 
         }
 
@@ -105,7 +251,6 @@ namespace QuickSortApp
                 }
                 catch (System.FormatException)
                 {
-                    Console.WriteLine("jestem w catch");
                     condition = false;
                 }
                 if (condition == false)
