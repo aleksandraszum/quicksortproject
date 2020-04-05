@@ -8,78 +8,58 @@ namespace QuickSortApp
         static void Main(string[] args)
         {
             // default menu - Menu 1
-            StartMenu1();
-
-          /*  Console.WriteLine("Give a file-path");
-            string path = Console.ReadLine();
-            Console.WriteLine(path);
-            string[] myTable = ReadTable(path);
-            ShowTable(myTable);
-            Console.WriteLine(myTable);
-            string[] strTable = new string [myTable.Length];
-            float[] floatTable = new float [myTable.Length];            
-            
-            if (DataTypeCheck(myTable) == true)
-            {
-                floatTable = DataTypeConversion(myTable);
-            }
-            else
-            {
-                strTable = myTable;
-            }
-
-            Console.WriteLine("Give a file-path");
-            string mypath = Console.ReadLine();
-            Console.WriteLine(mypath);
-            WriteTable(mypath, floatTable); */
+            string[] table = null;
+            StartMenu1(table);
         }
 
-        // C:\Users\X\source\repos\QuickSortApp\QuickSortApp\bin\Debug\rawdata.txt
+        // C:\Users\X\source\repos\QuickSortApp\QuickSortApp\bin\Debug\examples\rawdata.txt
 
-        static void StartMenu1()
+        static void StartMenu1(string[] table)
         {
-            string[] menuposition = { "Read a file", "Exit"};
-            int currentposition = 0;
-            int menutype = 1;
+            string[] menuPosition = { "Read a file", "Exit"};
+            int currentPosition = 0;
+            int menuType = 1;
             Console.Title = "Quick Sort Application";
-            string[] table = null;
+
             while (true)
             {
-                ShowMenu(menuposition, currentposition);
-                SelectingOptions(menuposition, currentposition, menutype, table);
+                ShowMenu(menuPosition, currentPosition);
+                SelectingOptions(menuPosition, currentPosition, menuType, table);
             }
-            
         }
 
         static void StartMenu2(string[] table)
         {
-            string[] menuposition = { "Display table", "Sort table", "Write sorted table to file", "Clean table",  "Exit" };
-            int currentposition = 0;
-            int menutype = 2;
+            string[] menuPosition = { "Display table", "Sort table", "Write sorted table to file", "Clean table",  "Exit" };
+            int currentPosition = 0;
+            int menuType = 2;
             Console.Title = "Quick Sort Application";
+
             while (true)
             {
-                ShowMenu(menuposition, currentposition);
-                SelectingOptions(menuposition, currentposition, menutype, table);
+                ShowMenu(menuPosition, currentPosition);
+                SelectingOptions(menuPosition, currentPosition, menuType, table);
             }
 
         }
 
-        static void ShowMenu(string[] position, int currentposition)
+        static void ShowMenu(string[] position, int currentPosition)
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Welcome to Quick Sort App. In this program you can \n" +
-                "read the data from file \n" +
-                "save the data into table \n" +
-                "sort the data \n" +
-                "clean the table \n" +
-                "save the sorted table to file");
+                "- read the data from file \n" +
+                "- save the data into table \n" +
+                "- sort the data \n" +
+                "- clean the table \n" +
+                "- save the sorted table to file");
             Console.WriteLine();
+
             for (int i = 0; i < position.Length; i++)
             {
-                if (i == currentposition)
+
+                if (i == currentPosition)
                 {
                     Console.BackgroundColor = ConsoleColor.DarkCyan;
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -87,6 +67,7 @@ namespace QuickSortApp
                     Console.BackgroundColor = ConsoleColor.Gray;
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
                 }
+
                 else
                 {
                     Console.WriteLine(position[i]);
@@ -94,27 +75,31 @@ namespace QuickSortApp
             }
         }
 
-        static void SelectingOptions(string[] position, int currentposition, int menu, string[] table)
+        static void SelectingOptions(string[] position, int currentPosition, int menu, string[] table)
         {
 
             do
             {
                 ConsoleKeyInfo buttom = Console.ReadKey();
+
                 if (buttom.Key == ConsoleKey.UpArrow)
                 {
-                    currentposition = (currentposition > 0) ? currentposition - 1 : position.Length - 1;
-                    ShowMenu(position, currentposition);
+                    currentPosition = (currentPosition > 0) ? currentPosition - 1 : position.Length - 1;
+                    ShowMenu(position, currentPosition);
                 }
+
                 else if (buttom.Key == ConsoleKey.DownArrow)
                 {
-                    currentposition = (currentposition + 1) % position.Length;
-                    ShowMenu(position, currentposition);
+                    currentPosition = (currentPosition + 1) % position.Length;
+                    ShowMenu(position, currentPosition);
                 }
+
                 else if (buttom.Key == ConsoleKey.Escape)
                 {
-                    currentposition = position.Length - 1;
+                    currentPosition = position.Length - 1;
                     break;
                 }
+
                 else if (buttom.Key == ConsoleKey.Enter)
                 {
                     break;
@@ -122,40 +107,39 @@ namespace QuickSortApp
                 
             }
             while (true);
-            RunOptions(currentposition, menu, table);
+            RunOptions(currentPosition, menu, table);
         }
 
-        static void RunOptions(int currentposition, int menu, string[] table)
+        static void RunOptions(int currentPosition, int menu, string[] table)
         {
-            string[] myTable;
             string[] strTable;
             float[] floatTable;
 
 
             if (menu == 1)
             {
-                switch (currentposition)
+                switch (currentPosition)
                 {
                     case 0: Console.Clear();
                         Console.WriteLine("Give a file-path");
                         string path = Console.ReadLine();
-                        myTable = ReadTable(path); 
+                        table = ReadTable(path); 
                         Console.WriteLine("Data has been loaded! \nPress any key");                        
                         Console.ReadKey();
-                        StartMenu2(myTable);
+                        StartMenu2(table);
                         break;
                         
                     case 1: Environment.Exit(0); break;
                 }
             }
-
            
             else
             {
-                switch (currentposition)
+                switch (currentPosition)
                 {
                     case 0: 
                         Console.Clear();
+
                         if (DataTypeCheck(table) == true)
                         {
                             floatTable = DataTypeConversion(table);
@@ -165,6 +149,7 @@ namespace QuickSortApp
                             Console.WriteLine("Press any key");
                             break;
                         }
+
                         else
                         {
                             strTable = table;
@@ -174,9 +159,55 @@ namespace QuickSortApp
                             Console.WriteLine("Press any key");
                             break;
                         }
+
                     case 1: Console.Clear(); Console.WriteLine("Opcja sort table"); Console.ReadKey(); break;
-                    case 2: Console.Clear(); Console.WriteLine("Opcja write table to file"); Console.ReadKey(); break;
-                    case 3: Console.Clear(); Console.WriteLine("Opcja clean table"); Console.ReadKey(); StartMenu1();  break;
+
+                    case 2: Console.Clear(); 
+                        Console.WriteLine("Give the path:");
+                        string path = Console.ReadLine();
+                        Console.WriteLine("Give the filename:");
+                        string name = Console.ReadLine();
+                        string fileName = path + "\\" + name + ".txt";
+
+                        if (DataTypeCheck(table) == true)
+                        {
+                            floatTable = DataTypeConversion(table);
+                            WriteTable(fileName, floatTable);
+                        }
+                        else
+                        {
+                            strTable = table;
+                            WriteTable(fileName, strTable);
+                        }
+                            
+                        Console.WriteLine("Data has been saved. \nPress any key");
+                        Console.ReadKey();
+                        break;
+
+                    case 3: 
+                        Console.Clear();
+
+                        if (DataTypeCheck(table) == true)
+                        {
+                            floatTable = CleanFloatTable();
+                            Console.WriteLine("Show table function:");
+                            ShowTable(floatTable);
+                            Console.WriteLine("Press any key");
+                            Console.ReadKey();
+                        }
+
+                        else
+                        {
+                            strTable = CleanTable();
+                            Console.WriteLine("Show table function:");
+                            ShowTable(strTable);
+                            Console.WriteLine("Press any key");
+                            Console.ReadKey();
+                        }                            
+
+                        StartMenu1(table);
+                        break;
+
                     case 4: Environment.Exit(0); break;
                 }
             }
@@ -186,16 +217,17 @@ namespace QuickSortApp
         static string[] ReadTable(string path)
         {
             // Reading data from a file
+
             while (File.Exists(path) == false)
             {
-                Console.WriteLine("File not found");
-                Console.WriteLine("Give a correct file-path");
+                Console.WriteLine("File not found! \nGive a correct file-path");
                 path = Console.ReadLine();
             }
 
             StreamReader sr = new StreamReader(path);
             string[] RawTable = new string[1];
             string line;
+
             while ((line = sr.ReadLine()) != null)
             {
                 RawTable[0] = RawTable[0] + line;
@@ -209,26 +241,45 @@ namespace QuickSortApp
             return RawTable;
         }
 
-        static void ShowTable(string[] Table)
+        static void ShowTable(string[] table)
         {
             // displaying a table with text data
             int i = 0;
-            foreach (string item in Table)
+
+            if (table == null)
             {
-                Console.WriteLine(item);
-                i++;
+                Console.WriteLine("Table is empty!");
+            }
+
+            else
+            {
+                foreach (string item in table)
+                {
+                    Console.WriteLine(item);
+                    i++;
+                }
+
             }
 
         }
 
-        static void ShowTable(float[] Table)
+        static void ShowTable(float[] table)
         {
             // displaying a table with numerical data
             int i = 0;
-            foreach (float item in Table)
+
+            if (table == null)
             {
-                Console.WriteLine(item);
-                i++;
+                Console.WriteLine("Table is empty!");
+            }
+
+            else
+            {
+                foreach (float item in table)
+                {
+                 Console.WriteLine(item);
+                    i++;
+                }
             }
 
         }
@@ -308,8 +359,19 @@ namespace QuickSortApp
 
         }
 
-        //static string[] CleanTable(string[] table)
-       // {
-       // }
+        static string[] CleanTable()
+        {
+            Console.WriteLine("The table has been cleaned.");
+            string[] table = null;
+            return table;
+        }
+
+        static float[] CleanFloatTable()
+        {
+            Console.WriteLine("The table has been cleaned.");
+            float[] table = null;
+            return table;
+        }
+
     }
 }
