@@ -7,7 +7,9 @@ namespace QuickSortApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Give a file-path");
+
+
+          /*  Console.WriteLine("Give a file-path");
             string path = Console.ReadLine();
             Console.WriteLine(path);
             string[] myTable = ReadTable(path);
@@ -28,7 +30,7 @@ namespace QuickSortApp
             Console.WriteLine("Give a file-path");
             string mypath = Console.ReadLine();
             Console.WriteLine(mypath);
-            WriteTable(mypath, floatTable);
+            WriteTable(mypath, floatTable); */
         }
 
         // C:\Users\X\source\repos\QuickSortApp\QuickSortApp\bin\Debug\rawdata.txt
