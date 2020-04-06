@@ -7,38 +7,23 @@ namespace QuickSortApp
     {
         static void Main(string[] args)
         {
-            // default menu - Menu 1
             string[] table = null;
-            StartMenu1(table);
+            StartMenu(table);
         }
 
         // C:\Users\X\source\repos\QuickSortApp\QuickSortApp\bin\Debug\examples\rawdata.txt
 
-        static void StartMenu1(string[] table)
+
+        static void StartMenu(string[] table)
         {
-            string[] menuPosition = { "Read a file", "Exit"};
+            string[] menuPosition = { "Read a file", "Display the table", "Sort the table", "Write sorted table to file", "Clean the table",  "Exit" };
             int currentPosition = 0;
-            int menuType = 1;
             Console.Title = "Quick Sort Application";
 
             while (true)
             {
                 ShowMenu(menuPosition, currentPosition);
-                SelectingOptions(menuPosition, currentPosition, menuType, table);
-            }
-        }
-
-        static void StartMenu2(string[] table)
-        {
-            string[] menuPosition = { "Display table", "Sort table", "Write sorted table to file", "Clean table",  "Exit" };
-            int currentPosition = 0;
-            int menuType = 2;
-            Console.Title = "Quick Sort Application";
-
-            while (true)
-            {
-                ShowMenu(menuPosition, currentPosition);
-                SelectingOptions(menuPosition, currentPosition, menuType, table);
+                SelectingOptions(menuPosition, currentPosition,  table);
             }
 
         }
@@ -75,7 +60,7 @@ namespace QuickSortApp
             }
         }
 
-        static void SelectingOptions(string[] position, int currentPosition, int menu, string[] table)
+        static void SelectingOptions(string[] position, int currentPosition, string[] table)
         {
 
             do
@@ -107,67 +92,80 @@ namespace QuickSortApp
                 
             }
             while (true);
-            RunOptions(currentPosition, menu, table);
+            RunOptions(currentPosition, table);
         }
 
-        static void RunOptions(int currentPosition, int menu, string[] table)
+        static void RunOptions(int currentPosition, string[] table)
         {
             string[] strTable;
             float[] floatTable;
 
 
-            if (menu == 1)
+            switch (currentPosition)
             {
-                switch (currentPosition)
-                {
-                    case 0: Console.Clear();
+                case 0:
+                    if (table == null)
+                    {
+                        Console.Clear();
                         Console.WriteLine("Give a file-path");
                         string path = Console.ReadLine();
-                        table = ReadTable(path); 
-                        Console.WriteLine("Data has been loaded! \nPress any key");                        
+                        table = ReadTable(path);
+                        Console.WriteLine("Data has been loaded! \nPress any key to return.");
                         Console.ReadKey();
-                        StartMenu2(table);
+                        StartMenu(table);
                         break;
-                        
-                    case 1: Environment.Exit(0); break;
-                }
-            }
-           
-            else
-            {
-                switch (currentPosition)
-                {
-                    case 0: 
+                    }
+                    else
+                    {
                         Console.Clear();
+                        Console.WriteLine("Data has been loaded! Clean the table to load a new file \nPress any key to return.");
+                        Console.ReadKey();
+                        StartMenu(table);
+                        break;
+                    }
 
-                        if (DataTypeCheck(table) == true)
-                        {
-                            floatTable = DataTypeConversion(table);
-                            Console.WriteLine("An array containing data from the loaded file:");
-                            ShowTable(floatTable);
-                            Console.ReadKey();
-                            Console.WriteLine("Press any key");
-                            break;
-                        }
+                case 1:
+                    Console.Clear();
 
-                        else
-                        {
-                            strTable = table;
-                            Console.WriteLine("An array containing data from the loaded file:");
-                            ShowTable(strTable);
-                            Console.ReadKey();
-                            Console.WriteLine("Press any key");
-                            break;
-                        }
+                    if (DataTypeCheck(table) == true)
+                    {
+                        floatTable = DataTypeConversion(table);
+                        Console.WriteLine("An array containing data from the loaded file:");
+                        ShowTable(floatTable);
+                        Console.ReadKey();
+                        Console.WriteLine("Press any key to return.");
+                        break;
+                    }
 
-                    case 1: Console.Clear(); Console.WriteLine("Opcja sort table"); Console.ReadKey(); break;
+                    else
+                    {
+                        strTable = table;
+                        Console.WriteLine("An array containing data from the loaded file:");
+                        ShowTable(strTable);
+                        Console.ReadKey();
+                        Console.WriteLine("Press any key to return.");
+                        break;
+                    }
 
-                    case 2: Console.Clear(); 
+                case 2: Console.Clear(); Console.WriteLine("Opcja sort table"); Console.ReadKey(); break;
+
+                case 3: 
+                    Console.Clear();
+
+                    if (table == null)
+                    {
+                        Console.WriteLine("Table is empty - no data to write.\n Press any key to return.");
+                        Console.ReadKey();
+                        break;
+                    }
+
+                    else
+                    {
                         Console.WriteLine("Give the path:");
-                        string path = Console.ReadLine();
+                        string path2 = Console.ReadLine();
                         Console.WriteLine("Give the filename:");
                         string name = Console.ReadLine();
-                        string fileName = path + "\\" + name + ".txt";
+                        string fileName = path2 + "\\" + name + ".txt";
 
                         if (DataTypeCheck(table) == true)
                         {
@@ -180,40 +178,47 @@ namespace QuickSortApp
                             WriteTable(fileName, strTable);
                         }
                             
-                        Console.WriteLine("Data has been saved. \nPress any key");
+                        Console.WriteLine("Data has been saved. \nPress any key to return.");
                         Console.ReadKey();
                         break;
+}
+                    
 
-                    case 3: 
-                        Console.Clear();
+                case 4: 
+                    Console.Clear();
+
+
+                    if (table != null)
+                    {
+                        table = CleanTable();
 
                         if (DataTypeCheck(table) == true)
                         {
                             floatTable = CleanFloatTable();
-                            Console.WriteLine("Show table function:");
-                            ShowTable(floatTable);
-                            Console.WriteLine("Press any key");
-                            Console.ReadKey();
                         }
 
                         else
                         {
                             strTable = CleanTable();
-                            Console.WriteLine("Show table function:");
-                            ShowTable(strTable);
-                            Console.WriteLine("Press any key");
-                            Console.ReadKey();
-                        }                            
+                        }
+                    }
 
-                        StartMenu1(table);
-                        break;
+                    else
+                    {
+                        Console.WriteLine("You don't load the file, so table is empty.");
+                    }
 
-                    case 4: Environment.Exit(0); break;
-                }
+                    Console.WriteLine("The data has been cleaned.\nPress any key to return.");
+                    Console.ReadKey();
+                    StartMenu(table);
+                    break;
+
+                case 5: Environment.Exit(0); break;
             }
+        }
             
 
-        }
+        
         static string[] ReadTable(string path)
         {
             // Reading data from a file
@@ -248,7 +253,7 @@ namespace QuickSortApp
 
             if (table == null)
             {
-                Console.WriteLine("Table is empty!");
+                Console.WriteLine("Table is empty - you don't loaded data or clean the table! \nYou should read the data from a file!");
             }
 
             else
@@ -270,7 +275,7 @@ namespace QuickSortApp
 
             if (table == null)
             {
-                Console.WriteLine("Table is empty!");
+                Console.WriteLine("Table is empty - you don't loaded data or clean the table! \nYou should read the data from a file!");
             }
 
             else
@@ -292,23 +297,27 @@ namespace QuickSortApp
             float result;
             bool condition = true;
 
-            foreach (string value in table)
-            {                    
-                condition = true;
+            if (table != null)
+            {
+                foreach (string value in table)
+                            {                    
+                                condition = true;
 
-                try
-                {
-                    result = Convert.ToInt32(value);
-                }
-                catch (System.FormatException)
-                {
-                    condition = false;
-                }
-                if (condition == false)
-                {
-                    break;
-                }
+                                try
+                                {
+                                    result = Convert.ToInt32(value);
+                                }
+                                catch (System.FormatException)
+                                {
+                                    condition = false;
+                                }
+                                if (condition == false)
+                                {
+                                    break;
+                                }
+                            }
             }
+            
 
             return condition;
 
@@ -317,14 +326,19 @@ namespace QuickSortApp
         static float[] DataTypeConversion(string[] table)
         {
             // conversion string table to float table if the data are numbers
-            int len = table.Length;
-            float[] floatTable = new float[len];
-            int i = 0;
-            foreach (string item in table)
-            {
-                floatTable[i] = Convert.ToInt32(item);
-                i++;
+            float[] floatTable = null;
+            if (table != null)
+            {           
+                int len = table.Length;
+                            floatTable = new float[len];
+                            int i = 0;
+                            foreach (string item in table)
+                            {
+                                floatTable[i] = Convert.ToInt32(item);
+                                i++;
+                            }
             }
+            
             return floatTable;
         }
 
@@ -361,14 +375,12 @@ namespace QuickSortApp
 
         static string[] CleanTable()
         {
-            Console.WriteLine("The table has been cleaned.");
             string[] table = null;
             return table;
         }
 
         static float[] CleanFloatTable()
         {
-            Console.WriteLine("The table has been cleaned.");
             float[] table = null;
             return table;
         }
