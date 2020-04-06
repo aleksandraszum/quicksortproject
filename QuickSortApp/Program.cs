@@ -16,14 +16,14 @@ namespace QuickSortApp
 
         static void StartMenu(string[] table)
         {
-            string[] menuPosition = { "Read a file", "Display the table", "Sort the table", "Write sorted table to file", "Clean the table",  "Exit" };
+            string[] menuPosition = { "Read a file", "Display the table", "Sort the table", "Write sorted table to file", "Clean the table", "Exit" };
             int currentPosition = 0;
             Console.Title = "Quick Sort Application";
 
             while (true)
             {
                 ShowMenu(menuPosition, currentPosition);
-                SelectingOptions(menuPosition, currentPosition,  table);
+                SelectingOptions(menuPosition, currentPosition, table);
             }
 
         }
@@ -89,17 +89,32 @@ namespace QuickSortApp
                 {
                     break;
                 }
-                
+
             }
             while (true);
-            RunOptions(currentPosition, table);
+
+            string[] strTable = null;
+            float[] floatTable = null;
+
+            if (table != null)
+            {
+                if (DataTypeCheck(table) == true)
+                {
+                    floatTable = DataTypeConversion(table);
+                    strTable = null;
+                }
+
+                else
+                {
+                    strTable = table;
+                    floatTable = null;
+                }
+            }
+            RunOptions(currentPosition, table, strTable, floatTable);
         }
 
-        static void RunOptions(int currentPosition, string[] table)
+        static void RunOptions(int currentPosition, string[] table, string[] strTable, float[] floatTable)
         {
-            string[] strTable;
-            float[] floatTable;
-
 
             switch (currentPosition)
             {
@@ -127,9 +142,8 @@ namespace QuickSortApp
                 case 1:
                     Console.Clear();
 
-                    if (DataTypeCheck(table) == true)
+                    if (floatTable != null)
                     {
-                        floatTable = DataTypeConversion(table);
                         Console.WriteLine("An array containing data from the loaded file:");
                         ShowTable(floatTable);
                         Console.ReadKey();
@@ -139,7 +153,6 @@ namespace QuickSortApp
 
                     else
                     {
-                        strTable = table;
                         Console.WriteLine("An array containing data from the loaded file:");
                         ShowTable(strTable);
                         Console.ReadKey();
@@ -149,12 +162,12 @@ namespace QuickSortApp
 
                 case 2: Console.Clear(); Console.WriteLine("Opcja sort table"); Console.ReadKey(); break;
 
-                case 3: 
+                case 3:
                     Console.Clear();
 
                     if (table == null)
                     {
-                        Console.WriteLine("Table is empty - no data to write.\n Press any key to return.");
+                        Console.WriteLine("Table is empty - no data to write.\nPress any key to return.");
                         Console.ReadKey();
                         break;
                     }
@@ -167,24 +180,22 @@ namespace QuickSortApp
                         string name = Console.ReadLine();
                         string fileName = path2 + "\\" + name + ".txt";
 
-                        if (DataTypeCheck(table) == true)
+                        if (floatTable != null)
                         {
-                            floatTable = DataTypeConversion(table);
                             WriteTable(fileName, floatTable);
                         }
                         else
                         {
-                            strTable = table;
                             WriteTable(fileName, strTable);
                         }
-                            
+
                         Console.WriteLine("Data has been saved. \nPress any key to return.");
                         Console.ReadKey();
                         break;
-}
-                    
+                    }
 
-                case 4: 
+
+                case 4:
                     Console.Clear();
 
 
@@ -192,7 +203,7 @@ namespace QuickSortApp
                     {
                         table = CleanTable();
 
-                        if (DataTypeCheck(table) == true)
+                        if (floatTable != null)
                         {
                             floatTable = CleanFloatTable();
                         }
@@ -216,9 +227,9 @@ namespace QuickSortApp
                 case 5: Environment.Exit(0); break;
             }
         }
-            
 
-        
+
+
         static string[] ReadTable(string path)
         {
             // Reading data from a file
@@ -282,7 +293,7 @@ namespace QuickSortApp
             {
                 foreach (float item in table)
                 {
-                 Console.WriteLine(item);
+                    Console.WriteLine(item);
                     i++;
                 }
             }
@@ -300,24 +311,24 @@ namespace QuickSortApp
             if (table != null)
             {
                 foreach (string value in table)
-                            {                    
-                                condition = true;
+                {
+                    condition = true;
 
-                                try
-                                {
-                                    result = Convert.ToInt32(value);
-                                }
-                                catch (System.FormatException)
-                                {
-                                    condition = false;
-                                }
-                                if (condition == false)
-                                {
-                                    break;
-                                }
-                            }
+                    try
+                    {
+                        result = Convert.ToInt32(value);
+                    }
+                    catch (System.FormatException)
+                    {
+                        condition = false;
+                    }
+                    if (condition == false)
+                    {
+                        break;
+                    }
+                }
             }
-            
+
 
             return condition;
 
@@ -328,17 +339,17 @@ namespace QuickSortApp
             // conversion string table to float table if the data are numbers
             float[] floatTable = null;
             if (table != null)
-            {           
+            {
                 int len = table.Length;
-                            floatTable = new float[len];
-                            int i = 0;
-                            foreach (string item in table)
-                            {
-                                floatTable[i] = Convert.ToInt32(item);
-                                i++;
-                            }
+                floatTable = new float[len];
+                int i = 0;
+                foreach (string item in table)
+                {
+                    floatTable[i] = Convert.ToInt32(item);
+                    i++;
+                }
             }
-            
+
             return floatTable;
         }
 
@@ -353,7 +364,7 @@ namespace QuickSortApp
                     writer.Write(table[i] + " ");
                     i += 1;
                 }
-                
+
             }
         }
 
