@@ -16,7 +16,7 @@ namespace QuickSortApp
 
         static void StartMenu(string[] table)
         {
-            string[] menuPosition = { "Read a file", "Display the table", "Sort the table", "Write sorted table to file", "Clean the table", "Exit" };
+            string[] menuPosition = { "Read a file", "Display the table", "Sort the table", "Write table to file", "Clean the table", "Exit" };
             int currentPosition = 0;
             Console.Title = "Quick Sort Application";
 
@@ -110,6 +110,7 @@ namespace QuickSortApp
                     floatTable = null;
                 }
             }
+
             RunOptions(currentPosition, table, strTable, floatTable);
         }
 
@@ -125,7 +126,7 @@ namespace QuickSortApp
                         Console.WriteLine("Give a file-path");
                         string path = Console.ReadLine();
                         table = ReadTable(path);
-                        Console.WriteLine("Data has been loaded! \nPress any key to return.");
+                        Console.WriteLine("Data has been loaded. \nPress any key to return.");
                         Console.ReadKey();
                         StartMenu(table);
                         break;
@@ -133,7 +134,7 @@ namespace QuickSortApp
                     else
                     {
                         Console.Clear();
-                        Console.WriteLine("Data has been loaded! Clean the table to load a new file \nPress any key to return.");
+                        Console.WriteLine("Data has been loaded. Clean the table to load a new file \nPress any key to return.");
                         Console.ReadKey();
                         StartMenu(table);
                         break;
@@ -142,38 +143,76 @@ namespace QuickSortApp
                 case 1:
                     Console.Clear();
 
-                    if (floatTable != null)
+
+                    if (table == null)
                     {
-                        Console.WriteLine("An array containing data from the loaded file:");
-                        ShowTable(floatTable);
+                        Console.WriteLine("No data to display - you don't loaded a file.");
+                        Console.WriteLine("Press any key to return.");                        
                         Console.ReadKey();
-                        Console.WriteLine("Press any key to return.");
+                        break;
+                    }
+
+                    else if (floatTable != null)
+                    {
+                        Console.WriteLine("A table containing data from the loaded file:");
+                        ShowTable(floatTable);
+                        Console.WriteLine("Press any key to return.");                        
+                        Console.ReadKey();
                         break;
                     }
 
                     else
                     {
-                        Console.WriteLine("An array containing data from the loaded file:");
+                        Console.WriteLine("A table containing data from the loaded file:");
                         ShowTable(strTable);
-                        Console.ReadKey();
                         Console.WriteLine("Press any key to return.");
+                        Console.ReadKey();
                         break;
                     }
 
-                case 2: Console.Clear(); Console.WriteLine("Opcja sort table"); Console.ReadKey(); break;
+                case 2: 
+                    Console.Clear();
+
+                    if (table == null)
+                    {
+                        Console.WriteLine("No data to sort - load a file.");
+                        Console.WriteLine("Press any key to return.");                        
+                        Console.ReadKey();
+                        break;
+
+                    }
+                    if (floatTable != null)
+                    {
+                        QuickSort(floatTable, 0, table.Length-1);                        
+                        ShowTable(floatTable);
+                        Console.WriteLine("Data has been sorted.");
+                        Console.WriteLine("Press any key to return.");
+                        Console.ReadKey();
+                        break;
+                    }
+
+                    else
+                    {
+                        QuickSort(strTable, 0, table.Length - 1);
+                        Console.WriteLine("Data has been sorted.");
+                        Console.WriteLine("Press any key to return.");
+                        ShowTable(strTable);
+                        Console.ReadKey();
+                        break;
+                    }
 
                 case 3:
                     Console.Clear();
 
                     if (table == null)
                     {
-                        Console.WriteLine("Table is empty - no data to write.\nPress any key to return.");
+                        Console.WriteLine("Table is empty - no data to write. You should load a file.\nPress any key to return.");
                         Console.ReadKey();
                         break;
                     }
 
                     else
-                    {
+                    {                            
                         Console.WriteLine("Give the path:");
                         string path2 = Console.ReadLine();
                         Console.WriteLine("Give the filename:");
@@ -193,7 +232,7 @@ namespace QuickSortApp
                         Console.ReadKey();
                         break;
                     }
-
+                    
 
                 case 4:
                     Console.Clear();
@@ -236,7 +275,7 @@ namespace QuickSortApp
 
             while (File.Exists(path) == false)
             {
-                Console.WriteLine("File not found! \nGive a correct file-path");
+                Console.WriteLine("File not found. \nGive a correct file-path");
                 path = Console.ReadLine();
             }
 
@@ -260,21 +299,15 @@ namespace QuickSortApp
         static void ShowTable(string[] table)
         {
             // displaying a table with text data
-            int i = 0;
 
             if (table == null)
             {
-                Console.WriteLine("Table is empty - you don't loaded data or clean the table! \nYou should read the data from a file!");
+                Console.WriteLine("Table is empty - you don't loaded data or clean the table. \nYou should read the data from a file.");
             }
 
             else
             {
-                foreach (string item in table)
-                {
-                    Console.WriteLine(item);
-                    i++;
-                }
-
+                Console.WriteLine(string.Join(" ", table));
             }
 
         }
@@ -282,20 +315,15 @@ namespace QuickSortApp
         static void ShowTable(float[] table)
         {
             // displaying a table with numerical data
-            int i = 0;
 
             if (table == null)
             {
-                Console.WriteLine("Table is empty - you don't loaded data or clean the table! \nYou should read the data from a file!");
+                Console.WriteLine("Table is empty - you don't loaded data or clean the table. \nYou should read the data from a file.");
             }
 
             else
             {
-                foreach (float item in table)
-                {
-                    Console.WriteLine(item);
-                    i++;
-                }
+                Console.WriteLine(string.Join(" ", table));
             }
 
         }
@@ -358,11 +386,9 @@ namespace QuickSortApp
             // writing to a sorted array file
             using (StreamWriter writer = new StreamWriter(name))
             {
-                int i = 0;
                 foreach (string item in table)
                 {
-                    writer.Write(table[i] + " ");
-                    i += 1;
+                    writer.Write(item + " ");
                 }
 
             }
@@ -373,11 +399,9 @@ namespace QuickSortApp
             // writing to a sorted array file
             using (StreamWriter writer = new StreamWriter(name))
             {
-                int i = 0;
                 foreach (float item in table)
                 {
-                    writer.Write(table[i] + " ");
-                    i += 1;
+                    writer.Write(item + " ");
                 }
 
             }
@@ -395,6 +419,83 @@ namespace QuickSortApp
             float[] table = null;
             return table;
         }
+
+        static void QuickSort(float[] tab, int left, int right)
+        {
+            int i = left;
+            int j = right;
+            float piv = tab[(left + right) / 2];
+
+            while (tab[i] < piv)
+            {
+                i += 1;
+            }
+
+            while (tab[j] > piv)
+            {
+                j -= 1;
+            }
+
+
+            if (i <= j)
+            {
+                float tmp = tab[i];
+                tab[i] = tab[j];
+                tab[j] = tmp;
+                i += 1;
+                j -= 1;
+            }
+
+            if (left < j)
+            {
+                QuickSort(tab, left, j);
+            }
+
+            if (i < right)
+            {
+                QuickSort(tab, i, right);
+            }
+
+        }
+
+        static void QuickSort(string[] tab, int left, int right)
+        {
+            int i = left;
+            int j = right;
+            string piv = tab[(left + right) / 2];
+
+            while (tab[i].CompareTo(piv) == -1)
+            {
+                i += 1;
+            }
+
+            while (tab[j].CompareTo(piv) == 1)
+            {
+                j -= 1;
+            }
+
+
+            if (i <= j)
+            {
+                string tmp = tab[i];
+                tab[i] = tab[j];
+                tab[j] = tmp;
+                i += 1;
+                j -= 1;
+            }
+
+            if (left < j)
+            {
+                QuickSort(tab, left, j);
+            }
+
+            if (i < right)
+            {
+                QuickSort(tab, i, right);
+            }
+
+        }
+
 
     }
 }
